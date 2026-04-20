@@ -44,6 +44,13 @@ async def login(request: LoginRequest):
             "user": {"id": 1, "name": "Admin User", "role": "admin", "email": request.email}
         }
     
+    if request.email == "doctor@hospital.com" and request.password == "doctor123":
+        return {
+            "access_token": "mocked_jwt_token_doctor",
+            "token_type": "bearer",
+            "user": {"id": 2, "name": "Default Doctor", "role": "doctor", "email": request.email}
+        }
+    
     # 2. Check MOCK_STAFF (Existing doctors, nurses, admins)
     for s in MOCK_STAFF:
         # For mock simplicity, we accept 'password123' or 'doctor123' for staff
@@ -110,6 +117,8 @@ async def register(data: RegisterRequest):
         "admission_status":        "outpatient",
     }
     REGISTERED_PATIENTS.append(patient_record)
+    from app.db.mock_data import save_data
+    save_data()
 
     return {
         "message":      "Registration successful!",

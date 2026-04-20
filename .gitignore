@@ -18,3 +18,7 @@ __pycache__/
 # OS files
 .DS_Store
 Thumbs.db
+
+# Database and Logs
+backend/app/db/db.json
+backend/app/db/debug.log

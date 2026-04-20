@@ -1,7 +1,35 @@
 from typing import List, Dict, Any
+import json
+import os
+
+DB_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_FILE = os.path.join(DB_DIR, "db.json")
 
 # Mocked patient registry (dynamically updated patients)
 REGISTERED_PATIENTS: List[Dict[str, Any]] = []
+
+def save_data():
+    """Save REGISTERED_PATIENTS to a JSON file."""
+    try:
+        with open(DB_FILE, "w") as f:
+            json.dump({"registered_patients": REGISTERED_PATIENTS}, f, indent=4)
+    except Exception as e:
+        print(f"Error saving data: {e}")
+
+def load_data():
+    """Load REGISTERED_PATIENTS from a JSON file."""
+    global REGISTERED_PATIENTS
+    if os.path.exists(DB_FILE):
+        try:
+            with open(DB_FILE, "r") as f:
+                data = json.load(f)
+                REGISTERED_PATIENTS.clear()
+                REGISTERED_PATIENTS.extend(data.get("registered_patients", []))
+        except Exception as e:
+            print(f"Error loading data: {e}")
+
+# Initial load
+load_data()
 
 # Centralized Staff Registry
 MOCK_STAFF: List[Dict[str, Any]] = [
