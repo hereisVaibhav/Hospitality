@@ -4,8 +4,7 @@ from typing import Optional
 
 router = APIRouter()
 
-# Mocked patient registry (persists during server lifetime)
-REGISTERED_PATIENTS = []
+from app.db.mock_data import MOCK_STAFF, REGISTERED_PATIENTS
 
 class LoginRequest(BaseModel):
     email: str
@@ -37,26 +36,25 @@ class RegisterRequest(BaseModel):
 
 @router.post("/login")
 async def login(request: LoginRequest):
-    # Mocked login logic
+    # 1. Check Hardcoded/Common Logins (for convenience)
     if request.email == "admin@hospital.com" and request.password == "admin123":
         return {
             "access_token": "mocked_jwt_token_admin",
             "token_type": "bearer",
             "user": {"id": 1, "name": "Admin User", "role": "admin", "email": request.email}
         }
-    elif request.email == "doctor@hospital.com" and request.password == "doctor123":
-         return {
-            "access_token": "mocked_jwt_token_doctor",
-            "token_type": "bearer",
-            "user": {"id": 2, "name": "Dr. Smith", "role": "doctor", "email": request.email}
-        }
-    elif request.email == "patient@hospital.com" and request.password == "patient123":
-         return {
-            "access_token": "mocked_jwt_token_patient",
-            "token_type": "bearer",
-            "user": {"id": 3, "name": "John Doe", "role": "patient", "email": request.email}
-        }
-    # Check dynamically registered patients
+    
+    # 2. Check MOCK_STAFF (Existing doctors, nurses, admins)
+    for s in MOCK_STAFF:
+        # For mock simplicity, we accept 'password123' or 'doctor123' for staff
+        if s["email"] == request.email and request.password in ["password123", "doctor123"]:
+            return {
+                "access_token": f"mocked_jwt_token_staff_{s['id']}",
+                "token_type": "bearer",
+                "user": s
+            }
+
+    # 3. Check dynamic patient registrations
     for p in REGISTERED_PATIENTS:
         if p["email"] == request.email and p["password"] == request.password:
             return {
@@ -65,6 +63,15 @@ async def login(request: LoginRequest):
                 "user": {"id": p["id"], "name": p["name"], "role": "patient", "email": p["email"]},
                 "profile": p,
             }
+    
+    # 4. Fallback for generic patient login
+    if request.email == "patient@hospital.com" and request.password == "patient123":
+         return {
+            "access_token": "mocked_jwt_token_patient",
+            "token_type": "bearer",
+            "user": {"id": 3, "name": "John Doe", "role": "patient", "email": request.email}
+        }
+
     raise HTTPException(status_code=401, detail="Invalid credentials")
 
 
@@ -73,6 +80,7 @@ async def register(data: RegisterRequest):
     # Check duplicate email
     all_emails = [
         "admin@hospital.com", "doctor@hospital.com", "patient@hospital.com",
+        *[s["email"] for s in MOCK_STAFF],
         *[p["email"] for p in REGISTERED_PATIENTS],
     ]
     if data.email in all_emails:
@@ -110,3 +118,4 @@ async def register(data: RegisterRequest):
         "user":         {"id": new_id, "name": data.name, "role": data.role, "email": data.email},
         "profile":      patient_record,
     }
+

@@ -4,18 +4,8 @@ from typing import Optional
 
 router = APIRouter()
 
-MOCK_STAFF = [
-    {"id": 1, "name": "Dr. Sarah Johnson", "role": "doctor", "department": "Cardiology", "email": "sarah.j@hospital.com", "phone": "+1-555-0101", "status": "active"},
-    {"id": 2, "name": "Dr. Michael Chen", "role": "doctor", "department": "Neurology", "email": "m.chen@hospital.com", "phone": "+1-555-0102", "status": "active"},
-    {"id": 3, "name": "Dr. Emily Davis", "role": "doctor", "department": "Pediatrics", "email": "e.davis@hospital.com", "phone": "+1-555-0103", "status": "active"},
-    {"id": 4, "name": "Nurse Rachel Green", "role": "nurse", "department": "Emergency", "email": "r.green@hospital.com", "phone": "+1-555-0201", "status": "active"},
-    {"id": 5, "name": "Nurse James Wilson", "role": "nurse", "department": "ICU", "email": "j.wilson@hospital.com", "phone": "+1-555-0202", "status": "on-leave"},
-    {"id": 6, "name": "Nurse Lisa Park", "role": "nurse", "department": "Cardiology", "email": "l.park@hospital.com", "phone": "+1-555-0203", "status": "active"},
-    {"id": 7, "name": "Dr. Robert Martinez", "role": "doctor", "department": "Orthopedics", "email": "r.martinez@hospital.com", "phone": "+1-555-0104", "status": "active"},
-    {"id": 8, "name": "Admin Jane Foster", "role": "admin", "department": "Administration", "email": "j.foster@hospital.com", "phone": "+1-555-0301", "status": "active"},
-    {"id": 9, "name": "Dr. Priya Sharma", "role": "doctor", "department": "Dermatology", "email": "p.sharma@hospital.com", "phone": "+1-555-0105", "status": "active"},
-    {"id": 10, "name": "Nurse Tom Hardy", "role": "nurse", "department": "Neurology", "email": "t.hardy@hospital.com", "phone": "+1-555-0204", "status": "inactive"},
-]
+from app.db.mock_data import MOCK_STAFF
+
 
 
 class StaffCreate(BaseModel):

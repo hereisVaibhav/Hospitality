@@ -4,13 +4,8 @@ from typing import Optional
 
 router = APIRouter()
 
-MOCK_PRESCRIPTIONS = [
-    {"id": 1, "patient": "John Doe", "doctor": "Dr. Smith", "date": "2026-03-15", "medicines": "Amlodipine 5mg, Metformin 500mg", "dosage": "Once daily after meals", "notes": "Monitor blood pressure weekly. Follow up in 30 days."},
-    {"id": 2, "patient": "Bob Wilson", "doctor": "Dr. Smith", "date": "2026-03-14", "medicines": "Sumatriptan 50mg", "dosage": "As needed for migraine onset, max 2 per day", "notes": "Avoid triggers: bright lights, stress. MRI scheduled for next visit."},
-    {"id": 3, "patient": "Charlie Davis", "doctor": "Dr. Smith", "date": "2026-03-13", "medicines": "Levetiracetam 500mg", "dosage": "Twice daily", "notes": "Seizure-free for 6 months. Continue current regimen."},
-    {"id": 4, "patient": "Jane Smith", "doctor": "Dr. Sarah Johnson", "date": "2026-03-15", "medicines": "Flecainide 100mg", "dosage": "Twice daily", "notes": "Holter monitor results pending."},
-    {"id": 5, "patient": "Eve Adams", "doctor": "Dr. Smith", "date": "2026-03-12", "medicines": "Sertraline 50mg, Zolpidem 5mg", "dosage": "Sertraline: morning, Zolpidem: bedtime as needed", "notes": "Follow-up in 2 weeks to assess response."},
-]
+from app.db.mock_data import MOCK_PRESCRIPTIONS
+
 
 
 class PrescriptionCreate(BaseModel):

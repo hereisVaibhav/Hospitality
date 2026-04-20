@@ -13,18 +13,8 @@ ALL_SLOTS = [
     "04:30 PM", "05:00 PM"
 ]
 
-MOCK_APPOINTMENTS = [
-    {"id": 1, "patient": "John Doe", "doctor": "Dr. Michael Chen", "department": "Neurology", "date": "2026-04-04", "time": "09:00 AM", "status": "completed", "notes": "Routine checkup completed. Vitals normal."},
-    {"id": 2, "patient": "Jane Smith", "doctor": "Dr. Sarah Johnson", "department": "Cardiology", "date": "2026-04-04", "time": "10:30 AM", "status": "completed", "notes": "ECG performed, results normal."},
-    {"id": 3, "patient": "Bob Wilson", "doctor": "Dr. Michael Chen", "department": "Neurology", "date": "2026-04-04", "time": "11:00 AM", "status": "in-progress", "notes": ""},
-    {"id": 4, "patient": "Alice Brown", "doctor": "Dr. Robert Martinez", "department": "Orthopedics", "date": "2026-04-05", "time": "02:00 PM", "status": "booked", "notes": ""},
-    {"id": 5, "patient": "Charlie Davis", "doctor": "Dr. Michael Chen", "department": "Neurology", "date": "2026-04-05", "time": "03:00 PM", "status": "booked", "notes": ""},
-    {"id": 6, "patient": "Diana Prince", "doctor": "Dr. Priya Sharma", "department": "Dermatology", "date": "2026-04-05", "time": "03:30 PM", "status": "booked", "notes": ""},
-    {"id": 7, "patient": "Eve Adams", "doctor": "Dr. Michael Chen", "department": "Neurology", "date": "2026-04-06", "time": "09:00 AM", "status": "booked", "notes": ""},
-    {"id": 8, "patient": "Frank Castle", "doctor": "Dr. Emily Davis", "department": "Pediatrics", "date": "2026-04-06", "time": "10:00 AM", "status": "cancelled", "notes": "Patient requested cancellation."},
-    {"id": 9, "patient": "Grace Lee", "doctor": "Dr. Michael Chen", "department": "Neurology", "date": "2026-04-06", "time": "11:00 AM", "status": "booked", "notes": ""},
-    {"id": 10, "patient": "Harry Potter", "doctor": "Dr. Sarah Johnson", "department": "Cardiology", "date": "2026-04-06", "time": "02:00 PM", "status": "booked", "notes": ""},
-]
+from app.db.mock_data import MOCK_APPOINTMENTS
+
 
 
 class AppointmentUpdate(BaseModel):
