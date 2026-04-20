@@ -1,0 +1,20 @@
+# Dependencies
+node_modules/
+backend/venv/
+backend/.env
+frontend/.env
+frontend/node_modules/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# IDEs/Editors
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
