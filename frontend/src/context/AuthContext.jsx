@@ -17,6 +17,29 @@ export const AuthProvider = ({ children }) => {
     }, []);
 
     const login = async (email, password) => {
+        // MOCK LOGIN FOR DEMO
+        if (import.meta.env.VITE_USE_MOCK_DATA === 'true' || true) {
+            console.log('Demo Mode: Simulating login success');
+            const mockUser = {
+                id: 'demo-1',
+                email: email,
+                name: email.split('@')[0].toUpperCase(),
+                role: email.includes('admin') ? 'admin' : (email.includes('doctor') ? 'doctor' : 'patient')
+            };
+            const mockProfile = {
+                id: 'prof-1',
+                fullName: mockUser.name,
+                email: email
+            };
+
+            localStorage.setItem('token', 'demo-token');
+            localStorage.setItem('user', JSON.stringify(mockUser));
+            localStorage.setItem('patientProfile', JSON.stringify(mockProfile));
+            setUser(mockUser);
+            setProfile(mockProfile);
+            return { success: true };
+        }
+
         try {
             const response = await api.post('/auth/login', { email, password });
             const { access_token, user: userData, profile: profileData } = response.data;
@@ -37,6 +60,16 @@ export const AuthProvider = ({ children }) => {
     };
 
     const register = async (formData) => {
+        // MOCK REGISTER FOR DEMO
+        if (import.meta.env.VITE_USE_MOCK_DATA === 'true' || true) {
+            console.log('Demo Mode: Simulating registration success');
+            const mockUser = { id: 'demo-2', email: formData.email, name: formData.fullName, role: 'patient' };
+            localStorage.setItem('token', 'demo-token');
+            localStorage.setItem('user', JSON.stringify(mockUser));
+            setUser(mockUser);
+            return { success: true };
+        }
+
         try {
             const response = await api.post('/auth/register', formData);
             const { access_token, user: userData, profile: profileData } = response.data;
@@ -52,6 +85,7 @@ export const AuthProvider = ({ children }) => {
             return { success: false, message: error.response?.data?.detail || 'Registration failed. Please try again.' };
         }
     };
+
 
     const logout = () => {
         localStorage.removeItem('token');
