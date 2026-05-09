@@ -4,23 +4,22 @@ import { Navigate } from 'react-router-dom';
 import AdminDashboard from './AdminDashboard';
 import DoctorDashboard from './DoctorDashboard';
 import PatientDashboard from './PatientDashboard';
+import LoadingScreen from '../components/LoadingScreen';
 
 const Dashboard = () => {
     const { user, loading } = useAuth();
 
-    if (loading) return (
-        <div className="fade-in" style={{ textAlign: 'center', marginTop: '4rem', color: 'var(--text-muted)' }}>
-            Loading...
-        </div>
-    );
+    if (loading) return <LoadingScreen message="Accessing your dashboard..." />;
 
     if (!user) {
         return <Navigate to="/login" replace />;
     }
 
-    if (user.role === 'admin') {
+    const role = user.role?.toLowerCase();
+
+    if (role === 'admin') {
         return <AdminDashboard />;
-    } else if (user.role === 'doctor') {
+    } else if (role === 'doctor') {
         return <DoctorDashboard />;
     } else {
         return <PatientDashboard />;

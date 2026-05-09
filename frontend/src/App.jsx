@@ -19,6 +19,7 @@ import EmergencyWardsPage from './pages/EmergencyWardsPage';
 import TreatmentWardsPage from './pages/TreatmentWardsPage';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { Menu, X, LogOut, LayoutDashboard } from 'lucide-react';
+import LoadingScreen from './components/LoadingScreen';
 import './styles/global.css';
 
 const Navbar = () => {
@@ -111,34 +112,44 @@ const Navbar = () => {
     );
 };
 
+const AppContent = () => {
+    const { loading } = useAuth();
+
+    if (loading) return <LoadingScreen message="Initialising HospitHub..." />;
+
+    return (
+        <div className="app">
+            <Navbar />
+            <main className="container smooth-reveal" style={{ flex: 1 }}>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/about" element={<AboutPage />} />
+                    <Route path="/contact" element={<ContactPage />} />
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<RegisterPage />} />
+                    <Route path="/dashboard" element={<Dashboard />} />
+                    <Route path="/dashboard/staff" element={<ManageStaffPage />} />
+                    <Route path="/dashboard/departments" element={<DepartmentsPage />} />
+                    <Route path="/dashboard/reports" element={<ReportsPage />} />
+                    <Route path="/dashboard/settings" element={<SettingsPage />} />
+                    <Route path="/dashboard/appointments" element={<MyAppointmentsPage />} />
+                    <Route path="/dashboard/patients" element={<MyPatientsPage />} />
+                    <Route path="/dashboard/prescriptions" element={<PrescriptionsPage />} />
+                    <Route path="/dashboard/my-appointments" element={<PatientAppointmentsPage />} />
+                    <Route path="/dashboard/records" element={<MedicalRecordsPage />} />
+                    <Route path="/dashboard/emergency" element={<EmergencyWardsPage />} />
+                    <Route path="/dashboard/treatment" element={<TreatmentWardsPage />} />
+                </Routes>
+            </main>
+        </div>
+    );
+};
+
 function App() {
     return (
         <AuthProvider>
-            <Router>
-                <div className="app">
-                    <Navbar />
-                    <main className="container" style={{ flex: 1 }}>
-                        <Routes>
-                            <Route path="/" element={<Home />} />
-                            <Route path="/about" element={<AboutPage />} />
-                            <Route path="/contact" element={<ContactPage />} />
-                            <Route path="/login" element={<Login />} />
-                            <Route path="/register" element={<RegisterPage />} />
-                            <Route path="/dashboard" element={<Dashboard />} />
-                            <Route path="/dashboard/staff" element={<ManageStaffPage />} />
-                            <Route path="/dashboard/departments" element={<DepartmentsPage />} />
-                            <Route path="/dashboard/reports" element={<ReportsPage />} />
-                            <Route path="/dashboard/settings" element={<SettingsPage />} />
-                            <Route path="/dashboard/appointments" element={<MyAppointmentsPage />} />
-                            <Route path="/dashboard/patients" element={<MyPatientsPage />} />
-                            <Route path="/dashboard/prescriptions" element={<PrescriptionsPage />} />
-                            <Route path="/dashboard/my-appointments" element={<PatientAppointmentsPage />} />
-                            <Route path="/dashboard/records" element={<MedicalRecordsPage />} />
-                            <Route path="/dashboard/emergency" element={<EmergencyWardsPage />} />
-                            <Route path="/dashboard/treatment" element={<TreatmentWardsPage />} />
-                        </Routes>
-                    </main>
-                </div>
+            <Router basename="/Hospitality">
+                <AppContent />
             </Router>
         </AuthProvider>
     );

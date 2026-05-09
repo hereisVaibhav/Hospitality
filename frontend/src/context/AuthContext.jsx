@@ -20,23 +20,26 @@ export const AuthProvider = ({ children }) => {
         // MOCK LOGIN FOR DEMO
         if (import.meta.env.VITE_USE_MOCK_DATA === 'true' || true) {
             console.log('Demo Mode: Simulating login success');
+            const lowerEmail = email.toLowerCase();
             const mockUser = {
                 id: 'demo-1',
                 email: email,
                 name: email.split('@')[0].toUpperCase(),
-                role: email.includes('admin') ? 'admin' : (email.includes('doctor') ? 'doctor' : 'patient')
+                role: lowerEmail.includes('admin') ? 'admin' : (lowerEmail.includes('doctor') ? 'doctor' : 'patient')
             };
-            const mockProfile = {
-                id: 'prof-1',
-                fullName: mockUser.name,
-                email: email
-            };
-
+            
             localStorage.setItem('token', 'demo-token');
             localStorage.setItem('user', JSON.stringify(mockUser));
-            localStorage.setItem('patientProfile', JSON.stringify(mockProfile));
             setUser(mockUser);
-            setProfile(mockProfile);
+
+            if (mockUser.role === 'patient') {
+                const mockProfile = { id: 'prof-1', fullName: mockUser.name, email: email };
+                localStorage.setItem('patientProfile', JSON.stringify(mockProfile));
+                setProfile(mockProfile);
+            } else {
+                localStorage.removeItem('patientProfile');
+                setProfile(null);
+            }
             return { success: true };
         }
 

@@ -137,10 +137,18 @@ const Login = () => {
                     </form>
 
                     <div style={{ marginTop: '1.5rem', textAlign: 'center', paddingTop: '1.25rem', borderTop: '1px solid var(--glass-border)' }}>
-                        <span style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>New patient? </span>
-                        <Link to="/register" style={{ color: currentRole.color, fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none' }}>
-                            Create your account <ChevronRight size={13} style={{ verticalAlign: 'middle' }} />
-                        </Link>
+                        {activeRole === 'patient' ? (
+                            <>
+                                <span style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>New patient? </span>
+                                <Link to="/register" style={{ color: currentRole.color, fontWeight: 600, fontSize: '0.875rem', textDecoration: 'none' }}>
+                                    Create your account <ChevronRight size={13} style={{ verticalAlign: 'middle' }} />
+                                </Link>
+                            </>
+                        ) : (
+                            <span style={{ color: 'var(--text-muted)', fontSize: '0.875rem' }}>
+                                Need a {activeRole} account? <span style={{ color: currentRole.color, fontWeight: 600 }}>Contact Administrator</span>
+                            </span>
+                        )}
                     </div>
                 </div>
 
