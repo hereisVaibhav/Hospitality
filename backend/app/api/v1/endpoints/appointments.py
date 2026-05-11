@@ -13,7 +13,7 @@ ALL_SLOTS = [
     "04:30 PM", "05:00 PM"
 ]
 
-from app.db.mock_data import MOCK_APPOINTMENTS
+from app.db.mock_data import MOCK_APPOINTMENTS, save_data
 
 
 
@@ -107,6 +107,7 @@ async def create_appointment(appt: AppointmentCreate):
         "notes": ""
     }
     MOCK_APPOINTMENTS.append(new_appt)
+    save_data()
     return {"message": "Appointment booked successfully", "appointment": new_appt}
 
 
@@ -118,6 +119,7 @@ async def update_appointment(appointment_id: int, update: AppointmentUpdate):
                 appt["status"] = update.status
             if update.notes is not None:
                 appt["notes"] = update.notes
+            save_data()
             return {"message": "Appointment updated successfully", "appointment": appt}
     raise HTTPException(status_code=404, detail="Appointment not found")
 
@@ -127,5 +129,6 @@ async def cancel_appointment(appointment_id: int):
     for appt in MOCK_APPOINTMENTS:
         if appt["id"] == appointment_id:
             appt["status"] = "cancelled"
+            save_data()
             return {"message": "Appointment cancelled successfully", "appointment": appt}
     raise HTTPException(status_code=404, detail="Appointment not found")

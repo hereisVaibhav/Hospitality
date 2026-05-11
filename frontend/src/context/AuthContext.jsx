@@ -18,14 +18,20 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         // MOCK LOGIN FOR DEMO
-        if (import.meta.env.VITE_USE_MOCK_DATA === 'true' || true) {
+        if (import.meta.env.VITE_USE_MOCK_DATA === 'true') {
             console.log('Demo Mode: Simulating login success');
             const lowerEmail = email.toLowerCase();
+            
+            // Smarter role detection for demo mode
+            let role = 'patient';
+            if (lowerEmail.includes('admin') || lowerEmail.includes('foster')) role = 'admin';
+            else if (lowerEmail.includes('doctor') || lowerEmail.includes('sarah') || lowerEmail.includes('chen') || lowerEmail.includes('davis')) role = 'doctor';
+            
             const mockUser = {
-                id: 'demo-1',
+                id: 'demo-' + Date.now(),
                 email: email,
-                name: email.split('@')[0].toUpperCase(),
-                role: lowerEmail.includes('admin') ? 'admin' : (lowerEmail.includes('doctor') ? 'doctor' : 'patient')
+                name: email.split('@')[0].toUpperCase().replace('.', ' '),
+                role: role
             };
             
             localStorage.setItem('token', 'demo-token');
@@ -33,7 +39,7 @@ export const AuthProvider = ({ children }) => {
             setUser(mockUser);
 
             if (mockUser.role === 'patient') {
-                const mockProfile = { id: 'prof-1', fullName: mockUser.name, email: email };
+                const mockProfile = { id: 'prof-' + Date.now(), fullName: mockUser.name, email: email };
                 localStorage.setItem('patientProfile', JSON.stringify(mockProfile));
                 setProfile(mockProfile);
             } else {
@@ -64,9 +70,9 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (formData) => {
         // MOCK REGISTER FOR DEMO
-        if (import.meta.env.VITE_USE_MOCK_DATA === 'true' || true) {
+        if (import.meta.env.VITE_USE_MOCK_DATA === 'true') {
             console.log('Demo Mode: Simulating registration success');
-            const mockUser = { id: 'demo-2', email: formData.email, name: formData.fullName, role: 'patient' };
+            const mockUser = { id: 'demo-' + Date.now(), email: formData.email, name: formData.fullName, role: 'patient' };
             localStorage.setItem('token', 'demo-token');
             localStorage.setItem('user', JSON.stringify(mockUser));
             setUser(mockUser);

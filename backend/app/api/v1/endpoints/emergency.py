@@ -7,56 +7,7 @@ router = APIRouter()
 
 # ─── Mock Data ────────────────────────────────────────────────────────────────
 
-WARDS = [
-    {"id": 1, "name": "Cardiac ICU",      "short": "CICU",  "color": "#ef4444", "total_beds": 8},
-    {"id": 2, "name": "Neuro ICU",         "short": "NICU",  "color": "#8b5cf6", "total_beds": 6},
-    {"id": 3, "name": "General Emergency", "short": "GEN",   "color": "#f59e0b", "total_beds": 10},
-    {"id": 4, "name": "Trauma Unit",       "short": "TRMA",  "color": "#06b6d4", "total_beds": 8},
-]
-
-BEDS = [
-    # Cardiac ICU (ward 1)
-    {"id": 1,  "ward_id": 1, "ward": "Cardiac ICU",      "bed_no": "CICU-01", "status": "occupied", "patient": "John Doe",      "condition": "Critical — Myocardial Infarction", "admitted_at": "2026-04-04 07:30", "admitted_by": "Dr. Sarah Johnson"},
-    {"id": 2,  "ward_id": 1, "ward": "Cardiac ICU",      "bed_no": "CICU-02", "status": "occupied", "patient": "Mary Watson",   "condition": "Severe — Arrhythmia",              "admitted_at": "2026-04-04 09:15", "admitted_by": "Dr. Sarah Johnson"},
-    {"id": 3,  "ward_id": 1, "ward": "Cardiac ICU",      "bed_no": "CICU-03", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 4,  "ward_id": 1, "ward": "Cardiac ICU",      "bed_no": "CICU-04", "status": "reserved", "patient": "Harry Potter",  "condition": "Moderate — Chest Pain",            "admitted_at": "2026-04-04 11:00", "admitted_by": "Dr. Sarah Johnson"},
-    {"id": 5,  "ward_id": 1, "ward": "Cardiac ICU",      "bed_no": "CICU-05", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 6,  "ward_id": 1, "ward": "Cardiac ICU",      "bed_no": "CICU-06", "status": "occupied", "patient": "Frank Castle",  "condition": "Stable — Post-Surgery",            "admitted_at": "2026-04-03 14:00", "admitted_by": "Dr. Sarah Johnson"},
-    {"id": 7,  "ward_id": 1, "ward": "Cardiac ICU",      "bed_no": "CICU-07", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 8,  "ward_id": 1, "ward": "Cardiac ICU",      "bed_no": "CICU-08", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-
-    # Neuro ICU (ward 2)
-    {"id": 9,  "ward_id": 2, "ward": "Neuro ICU",        "bed_no": "NICU-01", "status": "occupied", "patient": "Bob Wilson",    "condition": "Critical — Traumatic Brain Injury","admitted_at": "2026-04-03 22:45", "admitted_by": "Dr. Michael Chen"},
-    {"id": 10, "ward_id": 2, "ward": "Neuro ICU",        "bed_no": "NICU-02", "status": "occupied", "patient": "Grace Lee",     "condition": "Severe — Stroke",                  "admitted_at": "2026-04-04 03:10", "admitted_by": "Dr. Michael Chen"},
-    {"id": 11, "ward_id": 2, "ward": "Neuro ICU",        "bed_no": "NICU-03", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 12, "ward_id": 2, "ward": "Neuro ICU",        "bed_no": "NICU-04", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 13, "ward_id": 2, "ward": "Neuro ICU",        "bed_no": "NICU-05", "status": "occupied", "patient": "Eve Adams",     "condition": "Stable — Seizure Monitoring",      "admitted_at": "2026-04-04 06:00", "admitted_by": "Dr. Michael Chen"},
-    {"id": 14, "ward_id": 2, "ward": "Neuro ICU",        "bed_no": "NICU-06", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-
-    # General Emergency (ward 3)
-    {"id": 15, "ward_id": 3, "ward": "General Emergency","bed_no": "GEN-01",  "status": "occupied", "patient": "Alice Brown",   "condition": "Moderate — Fracture",              "admitted_at": "2026-04-04 10:00", "admitted_by": "Dr. Robert Martinez"},
-    {"id": 16, "ward_id": 3, "ward": "General Emergency","bed_no": "GEN-02",  "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 17, "ward_id": 3, "ward": "General Emergency","bed_no": "GEN-03",  "status": "occupied", "patient": "Diana Prince",  "condition": "Mild — Severe Burns",              "admitted_at": "2026-04-04 08:30", "admitted_by": "Dr. Priya Sharma"},
-    {"id": 18, "ward_id": 3, "ward": "General Emergency","bed_no": "GEN-04",  "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 19, "ward_id": 3, "ward": "General Emergency","bed_no": "GEN-05",  "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 20, "ward_id": 3, "ward": "General Emergency","bed_no": "GEN-06",  "status": "reserved", "patient": "Charlie Davis", "condition": "Moderate — Abdominal Pain",         "admitted_at": "2026-04-04 12:00", "admitted_by": "Dr. Michael Chen"},
-    {"id": 21, "ward_id": 3, "ward": "General Emergency","bed_no": "GEN-07",  "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 22, "ward_id": 3, "ward": "General Emergency","bed_no": "GEN-08",  "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 23, "ward_id": 3, "ward": "General Emergency","bed_no": "GEN-09",  "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 24, "ward_id": 3, "ward": "General Emergency","bed_no": "GEN-10",  "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-
-    # Trauma Unit (ward 4)
-    {"id": 25, "ward_id": 4, "ward": "Trauma Unit",      "bed_no": "TRMA-01", "status": "occupied", "patient": "Jane Smith",    "condition": "Critical — Multiple Trauma",        "admitted_at": "2026-04-04 01:20", "admitted_by": "Dr. Robert Martinez"},
-    {"id": 26, "ward_id": 4, "ward": "Trauma Unit",      "bed_no": "TRMA-02", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 27, "ward_id": 4, "ward": "Trauma Unit",      "bed_no": "TRMA-03", "status": "occupied", "patient": "Victor Stone",  "condition": "Severe — Spinal Injury",           "admitted_at": "2026-04-03 19:00", "admitted_by": "Dr. Michael Chen"},
-    {"id": 28, "ward_id": 4, "ward": "Trauma Unit",      "bed_no": "TRMA-04", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 29, "ward_id": 4, "ward": "Trauma Unit",      "bed_no": "TRMA-05", "status": "reserved", "patient": "Lana Kane",     "condition": "Moderate — Burn Injuries",         "admitted_at": "2026-04-04 11:45", "admitted_by": "Dr. Priya Sharma"},
-    {"id": 30, "ward_id": 4, "ward": "Trauma Unit",      "bed_no": "TRMA-06", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 31, "ward_id": 4, "ward": "Trauma Unit",      "bed_no": "TRMA-07", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-    {"id": 32, "ward_id": 4, "ward": "Trauma Unit",      "bed_no": "TRMA-08", "status": "available","patient": None,            "condition": None,                               "admitted_at": None,               "admitted_by": None},
-]
-
-EMERGENCY_REQUESTS = []
+from app.db.mock_data import WARDS, BEDS, EMERGENCY_REQUESTS, save_data
 
 
 class AdmitRequest(BaseModel):
@@ -131,6 +82,7 @@ async def admit_patient(bed_id: int, body: AdmitRequest):
             bed["condition"]   = body.condition
             bed["admitted_by"] = body.admitted_by
             bed["admitted_at"] = datetime.now().strftime("%Y-%m-%d %H:%M")
+            save_data()
             return {"message": f"Patient '{body.patient_name}' admitted to {bed['bed_no']}", "bed": bed}
     raise HTTPException(status_code=404, detail="Bed not found.")
 
@@ -147,6 +99,7 @@ async def discharge_patient(bed_id: int):
             bed["condition"]   = None
             bed["admitted_at"] = None
             bed["admitted_by"] = None
+            save_data()
             return {"message": f"Patient '{patient_name}' discharged from {bed['bed_no']}", "bed": bed}
     raise HTTPException(status_code=404, detail="Bed not found.")
 
@@ -168,6 +121,7 @@ async def request_emergency(body: EmergencyRequest):
         "estimated_wait":  f"{body.severity * 3 + 2} minutes" if body.severity >= 3 else "15–20 minutes",
     }
     EMERGENCY_REQUESTS.append(new_req)
+    save_data()
     return {
         "message":        "Emergency request submitted. Our team will respond shortly.",
         "request_id":     req_id,
